@@ -1,5 +1,6 @@
 import React,{useState, useEffect} from 'react'
 import axios from 'axios'
+import './Parking.css'
 
 function Parking() {
 
@@ -65,17 +66,20 @@ function Parking() {
     }};
 
     return (
-        <div>
+        <div className='Parking'>
 
             <div className='parkingslots'>
             {  
              (slots!=={} && list.length===100)?
               list.map(slot => {
                   if(slots[slot]!==undefined)  
-                    return <div key={slot} className={`slot ${slot}`} onClick={()=>{slotWork(slots[slot].reserved, slot)}}>
-                        <p>{slot}</p>
-                        <p>{slots[slot].owner}</p>
-                        <p>{slots[slot].carnumber}</p>
+                    return <div key={slot} className={`slot ${slot} ${ (slots[slot].reserved) ? 'reserved' : null}`} >
+                        <p className='slotnames'>{slot}</p>
+                        <p className='owner' style={{ display: slots[slot].reserved? 'block': 'none'}}>{slots[slot].owner}</p>
+                        <p className='carnumber' style={{ display: slots[slot].reserved? 'block': 'none'}}>{slots[slot].carnumber}</p>
+                        <p className='owner' style={{ display: !slots[slot].reserved? 'block': 'none'}}>Unreserved</p>
+                        <button className='button' style={{ display: !slots[slot].reserved? 'block': 'none'}} onClick={()=>{slotWork(slots[slot].reserved, slot)}}>Reserve Slot</button>
+                        <button className='button' style={{ display: slots[slot].reserved? 'block': 'none'}} onClick={()=>{slotWork(slots[slot].reserved, slot)}}>Deallocate</button>
                         </div>
               } 
               )

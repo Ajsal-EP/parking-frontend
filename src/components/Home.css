@@ -1,0 +1,25 @@
+.logo{
+    padding:10px 30px;
+    font-size: 32px;
+    color:#d4af37;
+}
+.head{
+    margin-top: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.headline{
+    margin-top:100px;
+    text-align: center;
+    font-size: 62px;
+    font-weight: 500;
+    /* font-family: 'Lato', sans-serif; */
+}
+.park{
+    padding:15px 60px;
+    font-size: 24px;
+    border-radius:50px;
+    background: linear-gradient(45deg,white,rgb(214, 214, 214));
+}
