@@ -2,6 +2,8 @@ import React,{useState, useEffect} from 'react'
 import axios from 'axios'
 
 function Parking() {
+
+    const [count, setCount] = useState(0)
     const [slots, setslots] = useState({})
     const [list, setLists] = useState([])
 
@@ -16,21 +18,24 @@ function Parking() {
 
         axios.get('http://127.0.0.1:5000/slots')
             .then(function (response) {
-                setslots({...response.data})
+                {setslots({...response.data})}
             })
             .catch(function (error) {
                 console.log(error);
             })
-    },[]);
+    },[count]);
 
     function slotWork(reserved, slotname){
         if(reserved){
             if(window.confirm("So you want to UnAllocate this slot ?")){
                 axios.delete(`http://127.0.0.1:5000/slot/${slotname}`)
                 .then(function (response) {
-                if(response.status === 200){
-                    console.log('Success')
-                }
+                    setslots({...slots, slotname :{
+                        owner:'None',
+                        carnumber:'None',
+                        reserved:false
+                    }})
+                    setCount(count+1)
                 })
                 .catch(function (error) {
                 console.log(error);
@@ -44,22 +49,20 @@ function Parking() {
                 name=prompt('Enter Your Name : ');
                 carnumber=prompt('Enter Your CarNumber : ');
             };
-            axios.post('http://127.0.0.1:5000/reserve', {
-                slotname: slotname,
-                carnuumber: carnumber,
-                owner:name,
-              })
+            axios.get(`http://127.0.0.1:5000/reserve/${slotname}/${carnumber}/${name}`)
               .then(function (response) {
-                if(response.status === 200){
-                    console.log('Success')
-                }
+                    setslots({...slots, slotname :{
+                        owner:name,
+                        carnumber:carnumber,
+                        reserved:true
+                    }})
+                    setCount(count+1)
               })
               .catch(function (error) {
                 console.log(error);
               });
-            }
         }
-    };
+    }};
 
     return (
         <div>
@@ -82,6 +85,6 @@ function Parking() {
             
         </div>
     )
-}
+};
 
 export default Parking
